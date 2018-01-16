@@ -15,43 +15,35 @@ namespace Westman_Christopher_FinalProject
              * Week 4, FINAL PROJECT!!!
              */
              // Greet user and explain program
-            Console.WriteLine("Welcome to the GAS BOT! This app will calculate the cost of your gas for multiple road trips!");
+            Console.WriteLine("Welcome to GAS BOT! This app will calculate the cost of your gas for multiple trips!");
 
-            // Prompt user for first input
-            Console.WriteLine("\r\nGas Bot wants to know: \r\n" +
-                "How many trips do you wish to take?");
-
-            // Declare variables for validation 
-            string s_trips = Console.ReadLine();
-
+            // Prompt user for first inputs
+            Console.Write("\r\nGas Bot wants to know: \r\n" +
+                "How many trips do you wish to take? ");
+            
             // Call Validate method and store in variable for later use
-            double trips = Validate(s_trips);
+            double trips = Validate.Input(Console.ReadLine());
 
             // Declare variable that call the TotalMiles method, taking the GetMilesMethod, that takes trips as a parameter
-            double milesInTotal = TotalMiles(GetMiles(trips));
+            double milesInTotal = TotalMiles(TripMiles(trips));
 
             // Prompt user for gathering mpg value
-            Console.WriteLine("\r\nGas Bot wants to know:\r\nHow many miles per gallon of gas does your vehicle get?");
+            Console.WriteLine("\r\nGas Bot wants to know:\r\nHow many miles per gallon of gas does your vehicle get? ");
 
-            // Store user input for validation
-            string s_milesPerGal = Console.ReadLine();
             // Validate and store input by calling the Validate method
-            double milesPerGal = Validate(s_milesPerGal);
+            double milesPerGal = Validate.Input(Console.ReadLine());
 
             //Prompt user for cost of 1 gal of gas
-            Console.WriteLine("\r\nGas Bot wants to know:\r\nHow much is gas right now? Use 00.00 format please.");
-
-            // Store user input for validation
-            string s_pricePerGal = Console.ReadLine();
+            Console.Write("\r\nGas Bot wants to know:\r\nHow much is gas right now? Use 00.00 format please. ");
 
             // Validate and store input by calling the Validate method
-            decimal pricePerGal = (decimal)Validate(s_pricePerGal);
+            decimal pricePerGal = (decimal)Validate.Input(Console.ReadLine());
 
             // Store the total cost of gas from all trips by calling the CostOfGas method, taking in all prior input as argumants
             decimal totalCost = CostOfGas(milesInTotal, milesPerGal, pricePerGal);
 
             // Inform user of total cost of gas
-            Console.WriteLine("The cost of driveing {0} miles is {1:C}.", milesInTotal, totalCost);
+            Console.WriteLine("The cost of driving {0} miles is {1:C}.", milesInTotal, totalCost);
 
             Console.WriteLine("\r\nThank you for using Gas Bot!");
 
@@ -86,7 +78,7 @@ namespace Westman_Christopher_FinalProject
         //-/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         // Create method to gather the amount of miles driven per trip and store and return an array
-        static double[] GetMiles(double _trips)
+        static double[] TripMiles(double _trips)
         {
             // Type cast parameter in order to declare array size
             int tripIndex = (int)_trips;
@@ -98,11 +90,10 @@ namespace Westman_Christopher_FinalProject
             for (int i = 0; i < tripMiles.Length; i++)
             {
                 // Prompt user for miles driven for i trip
-                Console.WriteLine("\r\nGas Bot wants to know:\r\nHow many miles did you drive for trip #{0}?", i + 1);
-                // Store user input for validation
-                string s_miles = Console.ReadLine();
+                Console.WriteLine("\r\nGas Bot wants to know:\r\nHow many miles did you drive for trip #{0}? ", i + 1);
+                
                 // Validate and store miles by calling the Validate method
-                double miles = Validate(s_miles);
+                double miles = Validate.Input(Console.ReadLine());
                 // Take miles and assign it to the i index of tripMiles array
                 tripMiles[i] = miles;
 
@@ -136,41 +127,6 @@ namespace Westman_Christopher_FinalProject
             return _costOfGas;
         }
 
-        // Craete method for validating user input
-        public static double Validate(string input)
-        {
-            // Declare generic variable since this method will be used for multiple questions
-            double output = 0;
-            // Create while loop that allows for 2 validation loops to run
-            while (true)
-            {
-                // Validate for number < 0
-                while (double.TryParse(input, out output) && output < 0)
-                {
-                    Console.WriteLine("\r\nYou can not type in a value of less than 0. Please try again.");
-                    input = Console.ReadLine();
-                    
-                }
-
-                // Validate for letters and blank
-                while (string.IsNullOrWhiteSpace(input) || !double.TryParse(input, out output))
-                {
-                    // If incorrect user input is entered, correct user
-                    Console.WriteLine("Pleae type in a valid entry.");
-                    // Store input once again from user
-                    input = Console.ReadLine();
-                    continue;
-                }
-                // Break out of while loop if user input is valid
-                if (output >= 0)
-                {
-                    break;
-                }
-                
-            }
-            
-            // Return output to user to be stored for later purposes
-            return output;
-        }
+        
     }
 }
